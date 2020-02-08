@@ -86,7 +86,6 @@ switch(userCommand) {
                 if (error){
                     console.log(error);
                 };
-                console.log(data);
                 var dataRay = data.split(",");
                 if (dataRay[0] === "spotify-this-song") {
                     userInput = dataRay[1];
