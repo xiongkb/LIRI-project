@@ -2,7 +2,6 @@ require("dotenv").config();
 var Spotify = require("node-spotify-api")
 var keys = require("./keys.js");
 var spotify = new Spotify(keys.spotify);
-console.log(spotify);
 
 var axios = require("axios");
 var moment = require("moment");
@@ -29,9 +28,26 @@ switch(userCommand) {
 
         break;
     case "spotify-this-song":
-            
+        if (process.argv.length < 4){
+            userInput = "the+sign"
+        }
+        for (var i = 4; i < process.argv.length; i++){
+            userInput = userInput + "+" + process.argv[i];
+        }
+        spotify.search({type: "track", query: userInput, limit: 1})
+            .then(function(response) {
+                console.log("==========================");
+                console.log("Artist(s): " + response.tracks.items[0].artists[0].name);
+                console.log("Song Name: " + response.tracks.items[0].name);
+                console.log("Preview link: " + response.tracks.items[0].preview_url);
+                console.log("Album: " + response.tracks.items[0].album.name);
+                console.log("==========================")
+            })
         break;
     case "movie-this":
+        if (process.argv.length < 4) {
+            userInput = "mr+nobody"
+        }
         for (var i = 4; i < process.argv.length; i++){
             userInput = userInput + "+" + process.argv[i];
         }
@@ -40,7 +56,7 @@ switch(userCommand) {
                 // console.log(response.data)
                 if (response.data.Response === "False") {
                     console.log(response.data.Error)
-                }else {
+                } else {
                     console.log("==============================");
                     console.log("Title: " + response.data.Title);
                     console.log("Year: " + response.data.Year);
@@ -55,5 +71,6 @@ switch(userCommand) {
             });
         break;
     case "do-what-it-says":
+
         break;
 }
